@@ -10,7 +10,7 @@ import pandas as pd
 
 from data_interface.models import Data
 from parameters.parameters import EXPORT_FOLDER, \
-    GAIN, LOSS
+    GAIN, LOSS, CONTROL_CONDITIONS, SIG_STEEP, SIG_MID
 
 
 def export_csv(a):
@@ -18,19 +18,25 @@ def export_csv(a):
     data["monkey"] = [m for m in a.monkeys]
     for cond in GAIN, LOSS:
         for param in "distortion", "risk_aversion", "precision", "side_bias":
-            xs = [a.cpt_fit[cond][m][param] for m in a.monkeys]
+            xs = [a.cpt_fit[m][cond][param] for m in a.monkeys]
             x = [np.mean(i) for i in xs]
             data[f"{cond}-{param}"] = x
 
         if cond == GAIN:
-            entries = Data.objects.filter(is_gain=True)
+            entries = Data.objects.filter(is_gain=True, is_risky=True)
         elif cond == LOSS:
-            entries = Data.objects.filter(is_loss=True)
+            entries = Data.objects.filter(is_loss=True, is_risky=True)
         else:
             raise ValueError
-        data[f"{cond}-n_trial"] = [
+        data[f"{cond}-risky-n_trial"] = [
             entries.filter(monkey=m).count() for m in a.monkeys
         ]
+
+    for control_condition in CONTROL_CONDITIONS:
+        for param in SIG_STEEP, SIG_MID:
+            data[f"{cond}-{control_condition}-{param}"] = \
+                [a.control_sig_fit[m][control_condition]['fit'][param]
+                 for m in a.monkeys]
 
     path_bkp = os.path.join(EXPORT_FOLDER, f"param.csv")
     df = pd.DataFrame(data=data)

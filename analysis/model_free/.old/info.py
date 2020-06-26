@@ -1,4 +1,5 @@
 import numpy as np
+from parameters.parameters import GAIN, LOSS
 
 
 class Info:
@@ -14,7 +15,6 @@ class Info:
 
         entries = self.entries.filter(is_control=True)
         n_trials = entries.count()
-        print("n trials control", n_trials)
         n_success = entries.filter(choose_best=True).count()
         n_pairs = len(np.unique(entries.values_list('pair_id')))
         return n_success, n_trials, n_pairs
@@ -49,8 +49,14 @@ class Info:
 
 
 def get_info_data(entries, monkey):
+    info = {}
+    for cond in (GAIN, LOSS, GAIN_VS_LOSS):
 
-    print("Getting the info data...", end=' ', flush=True)
-    info = Info(entries=entries, monkey=monkey)
-    print("Done!")
+        print("Getting the info data...", end=' ', flush=True)
+        if cond == GAIN:
+            e = entries.filter(is_gain=True)
+        else:
+            e = entries.filter(is_loss=True)
+        info[cond] = Info(entries=e, monkey=monkey)
+        print("Done!")
     return info

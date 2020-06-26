@@ -1,36 +1,25 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_pdf import PdfPages
 
-
-from .subplot import history_control
 from .subplot import precision
 from .subplot import probability_distortion
 from .subplot import utility
-from .subplot import control
-from .subplot import freq_risk
-from .subplot import control_sigmoid
-from .subplot import info
-from .subplot import best_param_distrib
-from .subplot import LLS_BIC_distrib
 
 from plot.tools.tools import add_letter
 
-from parameters.parameters import CONTROL_CONDITIONS, \
-    FIG_FOLDER, GAIN, LOSS
+from parameters.parameters import FIG_FOLDER, GAIN, LOSS
 
 
 def figure_1(a):
 
-    nrows, ncols = 2, 3
+    nrows, ncols = 2, 3  # (Gain, loss), n param
     fig, axes = plt.subplots(nrows=nrows, ncols=ncols,
                              figsize=(4*ncols, 4*nrows))
 
     colors = ['C0', 'C1']
 
-    linestyles = ['--' if i in ('Havane', 'Gladys') else ':'
-                  for i in a.monkeys]
+    linestyles = ['--' for _ in a.monkeys]
 
     for i, cond in enumerate((GAIN, LOSS)):
         # Fig: Utility function
@@ -38,7 +27,7 @@ def figure_1(a):
                 'cond': cond}
         for param in ("risk_aversion", "distortion",
                       "precision", "side_bias"):
-            data[param] = [np.mean(a.cpt_fit[cond][m][param])
+            data[param] = [np.mean(a.cpt_fit[m][cond][param])
                            for m in a.monkeys]
 
         utility.plot(ax=axes[i, 0], data=data, color=colors[i],

@@ -182,7 +182,7 @@ class AgentSideAdditive(AgentSoftmax):
 
     param_labels = ['distortion', 'precision', 'risk_aversion', 'side_bias']
     bounds = [(0.2, 1.8), (0.1, 10.0), (-0.99, 0.99), (-10.0, 10.0)]
-    init_guess = (1.00, 1.00, 0.00, 0.50)
+    init_guess = (1.00, 1.00, 0.00, 0.0)
 
     def __init__(self, param):
 

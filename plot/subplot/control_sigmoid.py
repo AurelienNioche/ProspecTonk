@@ -13,8 +13,7 @@ def plot(ax, data, control_condition, color, dot_size=50, show_ylabel=True):
     y_label = "p(choose right)"
 
     cd = control_condition
-
-    d = data[cd]
+    d = data
 
     scatter_and_sigmoid(
         x=d['x'],
@@ -48,8 +47,8 @@ def plot(ax, data, control_condition, color, dot_size=50, show_ylabel=True):
     ax.yaxis.set_ticks_position('left')
     ax.spines['top'].set_color('none')
 
-    txt = "$k=" + f"{data[cd]['fit'][SIG_STEEP]:.2f}" + "$" + "\n" \
-        + "$x_0=" + f"{data[cd]['fit'][SIG_MID]:.2f}" + "$"
+    txt = "$k=" + f"{d['fit'][SIG_STEEP]:.2f}" + "$" + "\n" \
+        + "$x_0=" + f"{d['fit'][SIG_MID]:.2f}" + "$"
 
     # txt = \
     #     r"$F(x) = \dfrac{1}{1 + \exp(-k (x - x_0))}$" + "\n\n" \

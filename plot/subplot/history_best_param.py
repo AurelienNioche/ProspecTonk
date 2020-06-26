@@ -2,15 +2,24 @@ import numpy as np
 import warnings
 
 
-def _plot_history_best_param(
-        param, ax, y_lim, param_name, mid_line=None,
+def plot(
+        data, ax, y_lim, param_name, mid_line=None,
         axis_label_font_size=20,
         ticks_label_font_size=14,
         color='C0',
-        point_size=100):
+        point_size=100,
+        regress=None,
+):
 
-    x_data = np.arange(len(param)) + 1
-    y_data = param
+    x_data = np.arange(len(data)) + 1
+    y_data = data
+
+    if np.min(y_data) < y_lim[0] or np.max(y_data) > y_lim[1]:
+        msg = f"Some values are outside of range " \
+              f"for the 'history_best_param' plot " \
+              f"for parameter {param_name} " \
+              f"(min: {np.min(y_data):.2f}, max: {np.max(y_data):.2f})"
+        warnings.warn(msg)
 
     ax.scatter(x_data, y_data, color=color, alpha=0.5, s=point_size)
 
@@ -43,57 +52,47 @@ def _plot_history_best_param(
     ax.tick_params(axis='both', which='major', labelsize=ticks_label_font_size)
     ax.tick_params(axis='both', which='minor', labelsize=ticks_label_font_size)
 
+    if regress is not None:
 
-def plot(axes, data):
+        alpha, beta, relevant = regress
 
-    fit = data['fit']
-    class_model = data['fit']['class_model']
+        n = len(y_data)
+        x = np.arange(1, n + 1)
+        y = alpha + beta * x
 
-    args = [
-        ('risk_aversion', (-1, 1), 0.0, r"$\omega$"),
-        ('distortion', (0, 2), 1.0, r"$\alpha$"),
-        ('precision', (0, 3.5), False, r"$\lambda$")
-    ]
+        # print(alpha, beta, relevant)
+        if relevant:
+            line_style = "-"
+            alpha = 1
+        else:
+            line_style = ":"
+            alpha = 0.4
+        ax.plot(x, y, linestyle=line_style, alpha=alpha)
 
-    if class_model.__name__ == "AgentSideAdditive":
-        args.append(
-            ('side_bias', (-3, +10), 0.0, r"$\gamma$")
-        )
 
-    for i, arg in enumerate(args):
-
-        pr, y_lim, mid_line, param_name = arg
-
-        if np.min(fit[pr]) < y_lim[0] or np.max(fit[pr]) > y_lim[1]:
-
-            msg = f"Some values are outside of range " \
-                  f"for the 'history_best_param' plot " \
-                  f"for parameter {pr} " \
-                  f"(min: {np.min(fit[pr]):.2f}, max: {np.max(fit[pr]):.2f})"
-            warnings.warn(msg)
-
-        _plot_history_best_param(
-            ax=axes[i],
-            param=fit[pr],
-            y_lim=y_lim,
-            mid_line=mid_line,
-            param_name=param_name)
-
-        if 'regression' in data.keys():
-            regression_param = data['regression']
-
-            alpha, beta, relevant = regression_param[pr]
-
-            n = len(fit[pr])
-            x = np.arange(1, n+1)
-            y = alpha + beta * x
-
-            # print(alpha, beta, relevant)
-            if relevant:
-                line_style = "-"
-                alpha = 1
-            else:
-                line_style = ":"
-                alpha = 0.4
-            axes[i].plot(x, y, linestyle=line_style,
-                         alpha=alpha)
+# def plot(axes, data):
+#
+#     fit = data['fit']
+#     class_model = data['fit']['class_model']
+#
+#     args = [
+#         ('risk_aversion', (-1, 1), 0.0, r"$\omega$"),
+#         ('distortion', (0, 2), 1.0, r"$\alpha$"),
+#         ('precision', (0, 3.5), False, r"$\lambda$")
+#     ]
+#
+#     if class_model.__name__ == "AgentSideAdditive":
+#         args.append(
+#             ('side_bias', (-3, +10), 0.0, r"$\gamma$")
+#         )
+#
+#     for i, arg in enumerate(args):
+#
+#         pr, y_lim, mid_line, param_name = arg
+#
+#         _plot_history_best_param(
+#             ax=axes[i],
+#             param=fit[pr],
+#             y_lim=y_lim,
+#             mid_line=mid_line,
+#             param_name=param_name)

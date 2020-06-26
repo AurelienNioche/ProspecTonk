@@ -1,9 +1,9 @@
 import numpy as np
 
-from analysis.sigmoid_fit.sigmoid_fit import sigmoid_fit
+from analysis.model_free.sigmoid_fit.sigmoid_fit import sigmoid_fit
 
 
-def get_freq_risk_data(entries):
+def get_risk_sig_fit(entries):
 
     print("Getting the freq risk data...", end=' ', flush=True)
 
