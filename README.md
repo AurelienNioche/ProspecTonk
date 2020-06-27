@@ -31,11 +31,9 @@ after `2020-02-18`
     python3 import_xlsx
     
 
-### Reproduce the figures (and ) 
-
+### Reproduce the figures
 
     python3 main.py
-    
 
 ### Data viewing
    
