@@ -3,7 +3,7 @@ import os
 FIG_FOLDER = 'fig'
 BACKUP_FOLDER = os.path.join('data', 'pickle')
 SOURCE_FOLDER = os.path.join('data', 'source')
-EXPORT_FOLDER = os.path.join('data', 'export_xlsx')
+EXPORT_FOLDER = os.path.join('data', 'export')
 print(f"The figure folder is: {os.path.abspath(FIG_FOLDER)}")
 print(f"The backup folder is: {os.path.abspath(BACKUP_FOLDER)}")
 print(f"The source folder is: {os.path.abspath(SOURCE_FOLDER)}")
@@ -33,5 +33,5 @@ GAIN_VS_LOSS = "gain_vs_loss"
 
 
 CONTROL_CONDITIONS = [
-    f"{cd}-{cc}" for cd in (GAIN, LOSS) for cc in (SAME_P, SAME_X)
+    f"{cd}__{cc}" for cd in (GAIN, LOSS) for cc in (SAME_P, SAME_X)
 ] + [GAIN_VS_LOSS, ]

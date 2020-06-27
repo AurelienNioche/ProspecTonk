@@ -128,10 +128,17 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# Django
 data_interface/migrations/*
 !data_interface/migrations/__init__.py
 
+# Data
 data/pickle
 data/db/results.db
 
+# Figures
 fig
+
+# Pycharm
+.idea
+/data/source/~$demo_ranking.xlsx

@@ -20,7 +20,7 @@ def export_csv(a):
         for param in "distortion", "risk_aversion", "precision", "side_bias":
             xs = [a.cpt_fit[m][cond][param] for m in a.monkeys]
             x = [np.mean(i) for i in xs]
-            data[f"{cond}-{param}"] = x
+            data[f"{cond}__{param}"] = x
 
         if cond == GAIN:
             entries = Data.objects.filter(is_gain=True, is_risky=True)
@@ -28,7 +28,7 @@ def export_csv(a):
             entries = Data.objects.filter(is_loss=True, is_risky=True)
         else:
             raise ValueError
-        data[f"{cond}-risky-n_trial"] = [
+        data[f"{cond}_risky__n_trial"] = [
             entries.filter(monkey=m).count() for m in a.monkeys
         ]
 
@@ -38,7 +38,17 @@ def export_csv(a):
                 [a.control_sig_fit[m][control_condition]['fit'][param]
                  for m in a.monkeys]
 
+    # include demographic / ranking data
+    col_names = ["idname", "DS", "EloRating", "weight", "oldDS", "gender"]
+    df = pd.read_excel(os.path.join('data', 'source', 'demo_ranking.xlsx'),
+                       usecols=col_names,
+                       sheet_name='data')
+
+    for c in col_names[1:]:
+        d = [df[df["idname"] == m][c].item() for m in a.monkeys]
+        data[c] = d   # [df[df["idname"] == m][c] for m in a.monkeys]
+
     path_bkp = os.path.join(EXPORT_FOLDER, f"param.csv")
     df = pd.DataFrame(data=data)
-    df.to_csv(path_bkp)
+    df.to_csv(path_bkp, index=False)
     print(f"CSV summary created at '{path_bkp}'")

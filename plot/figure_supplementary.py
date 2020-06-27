@@ -129,33 +129,44 @@ def fig_ind(a):
 
 def fig_hist_param(a):
 
+    params = ("risk_aversion", "distortion", "precision", "side_bias")
+    mid_line = (0, 1, None, 0)
     colors = ['C0', 'C1']
     # show_ylabel = [True, False]
 
     for j, cond in enumerate((GAIN, LOSS)):
         nrows, ncols = len(a.monkeys), 4
         fig, axes = plt.subplots(nrows=nrows, ncols=ncols,
-                                 figsize=(2.5 * ncols, 2.5 * nrows))
+                                 figsize=(3 * ncols, 3 * nrows))
 
         axes = axes.flatten()
+        np.seterr(all='raise')
         k = 0
         for i, m in enumerate(a.monkeys):
             add_letter(axes[k], i=i)
-            for param in ("risk_aversion", "distortion",
-                          "precision", "side_bias"):
+            for p_i, param in enumerate(params):
                 data = a.cpt_fit[m][cond][param]
                 regress = a.hist_best_param_data[m][cond][param]
 
-                history_best_param.plot(axes=axes[k],
+                all_data = [a.cpt_fit[m][cond][param] for m in a.monkeys]
+                y_lim = (
+                    np.min([np.min(d) for d in all_data]),
+                    np.max([np.max(d) for d in all_data]),
+                )
+
+                history_best_param.plot(ax=axes[k],
                                         data=data,
                                         regress=regress,
-                                        color=colors[j])
+                                        color=colors[j],
+                                        param_name=param,
+                                        y_lim=y_lim,
+                                        mid_line=mid_line[p_i])
                 k += 1
 
         for ax in axes[k:]:
             ax.set_axis_off()
 
-        fig_path = os.path.join(FIG_FOLDER, f"fig_ind_{cond}.pdf")
+        fig_path = os.path.join(FIG_FOLDER, f"fig_hist_param_{cond}.pdf")
         plt.tight_layout()
         plt.savefig(fig_path)
         print(f"Figure {fig_path} created!")

@@ -14,12 +14,12 @@ def plot(
     x_data = np.arange(len(data)) + 1
     y_data = data
 
-    if np.min(y_data) < y_lim[0] or np.max(y_data) > y_lim[1]:
-        msg = f"Some values are outside of range " \
-              f"for the 'history_best_param' plot " \
-              f"for parameter {param_name} " \
-              f"(min: {np.min(y_data):.2f}, max: {np.max(y_data):.2f})"
-        warnings.warn(msg)
+    # if np.min(y_data) < y_lim[0] or np.max(y_data) > y_lim[1]:
+    #     msg = f"Some values are outside of range " \
+    #           f"for the 'history_best_param' plot " \
+    #           f"for parameter {param_name} " \
+    #           f"(min: {np.min(y_data):.2f}, max: {np.max(y_data):.2f})"
+    #     warnings.warn(msg)
 
     ax.scatter(x_data, y_data, color=color, alpha=0.5, s=point_size)
 
@@ -67,7 +67,7 @@ def plot(
         else:
             line_style = ":"
             alpha = 0.4
-        ax.plot(x, y, linestyle=line_style, alpha=alpha)
+        ax.plot(x, y, linestyle=line_style, alpha=alpha, color=color)
 
 
 # def plot(axes, data):

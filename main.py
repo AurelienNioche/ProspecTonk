@@ -13,7 +13,7 @@ def main():
         limit_n_trial=2000,
         limit_side_freq=0.80,
         force=True,
-        monkeys=('Abr', 'Ala', ), #'all',  # ('Havane', ),
+        monkeys='all',   # ('Abr', 'Ala', )
         class_model=AgentSideAdditive,
         n_trials_per_chunk=200,
         n_trials_per_chunk_control=200,

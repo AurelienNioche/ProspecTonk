@@ -101,8 +101,9 @@ def _get_cross_validation(entries, randomize, n_chunk, class_model, cond,
     return fit
 
 
-def _pickle_load(entries, cond, force, randomize, n_chunk, n_trials_per_chunk,
-                 class_model, method):
+def get_parameter_estimate(
+        entries, cond, randomize, class_model, method, force=False,
+        n_chunk=None, n_trials_per_chunk=None):
 
     randomize_str = "random_order" if randomize else "chronological_order"
     monkey = entries[0].monkey
@@ -127,22 +128,6 @@ def _pickle_load(entries, cond, force, randomize, n_chunk, n_trials_per_chunk,
     else:
         with open(fit_path, 'rb') as f:
             fit = pickle.load(f)
-
-    return fit
-
-
-def get_parameter_estimate(
-        entries, cond, randomize, class_model, method, force=False,
-        n_chunk=None, n_trials_per_chunk=None):
-
-    fit = _pickle_load(entries=entries,
-                       cond=cond,
-                       randomize=randomize,
-                       n_chunk=n_chunk,
-                       n_trials_per_chunk=n_trials_per_chunk,
-                       class_model=class_model,
-                       method=method,
-                       force=force)
 
     print(f'Results fit DM model:')
     for label in class_model.param_labels + ['LLS', 'BIC']:

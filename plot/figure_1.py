@@ -19,7 +19,7 @@ def figure_1(a):
 
     colors = ['C0', 'C1']
 
-    linestyles = ['--' for _ in a.monkeys]
+    linestyles = ['-' for _ in a.monkeys]
 
     for i, cond in enumerate((GAIN, LOSS)):
         # Fig: Utility function
