@@ -35,7 +35,7 @@ after `2020-02-18`
 
     python3 main.py
 
-### Data viewing
+### Data viewing
    
 #### Config
 
