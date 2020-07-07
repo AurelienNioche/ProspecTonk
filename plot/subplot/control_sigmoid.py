@@ -12,7 +12,6 @@ def plot(ax, data, control_condition, color, dot_size=50, show_ylabel=True):
     x_label = "$EV_{right} - EV_{left}$"
     y_label = "p(choose right)"
 
-    cd = control_condition
     d = data
 
     scatter_and_sigmoid(
@@ -25,8 +24,8 @@ def plot(ax, data, control_condition, color, dot_size=50, show_ylabel=True):
         dot_size=dot_size
     )
 
-    # title = LABELS_CONTROL[cd]
-    # ax.set_title(title, fontsize=axis_label_font_size*1.2)
+    title = control_condition
+    ax.set_title(title)
 
     ax.axhline(0.5, alpha=0.5, linewidth=1, color='black',
                linestyle='--', zorder=-10)

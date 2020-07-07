@@ -19,13 +19,13 @@ def get_control_data(entries, **kwargs_history):
             d_cond = entries.filter(is_loss=True)
 
         e = d_cond.filter(is_same_p=True)
-        label = f"{cond}-{SAME_P}"
+        label = f"{cond}__{SAME_P}"
         data[label] = _compute_success_rate_per_pair(e)
         data_sigmoid[label] = _fit_sigmoid(e)
         data_history[label] = _history(e, **kwargs_history)
 
         e = d_cond.filter(is_same_x=True)
-        label = f"{cond}-{SAME_X}"
+        label = f"{cond}__{SAME_X}"
         data[label] = _compute_success_rate_per_pair(e)
         data_sigmoid[label] = _fit_sigmoid(e)
         data_history[label] = _history(e, **kwargs_history)

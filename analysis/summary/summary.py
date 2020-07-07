@@ -34,7 +34,7 @@ def export_csv(a):
 
     for control_condition in CONTROL_CONDITIONS:
         for param in SIG_STEEP, SIG_MID:
-            data[f"{cond}-{control_condition}-{param}"] = \
+            data[f"{cond}__{control_condition}__{param}"] = \
                 [a.control_sig_fit[m][control_condition]['fit'][param]
                  for m in a.monkeys]
 

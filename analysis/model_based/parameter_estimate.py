@@ -4,12 +4,18 @@ import os
 import scipy.stats
 import scipy.optimize
 
-from parameters.parameters import BACKUP_FOLDER
+from parameters.parameters import BACKUP_FOLDER, GAIN, LOSS
 
 
-def _get_chunk(entries, randomize, n_chunk, n_trials_per_chunk):
+def _get_chunk(entries, cond, randomize, n_chunk, n_trials_per_chunk):
 
     entries = entries.filter(is_risky=True)
+    if cond == GAIN:
+        entries = entries.filter(is_gain=True)
+    elif cond == LOSS:
+        entries = entries.filter(is_loss=True)
+    else:
+        raise Exception
 
     data = np.array(entries.values('p0', 'x0', 'p1', 'x1', 'c').order_by("id"))
     n = len(data)
@@ -64,6 +70,7 @@ def _get_cross_validation(entries, randomize, n_chunk, class_model, cond,
 
     data, parts, n_trial = _get_chunk(
         entries=entries,
+        cond=cond,
         n_chunk=n_chunk,
         n_trials_per_chunk=n_trials_per_chunk,
         randomize=randomize)
