@@ -9,6 +9,7 @@ def plot(
         color='C0',
         point_size=100,
         regress=None,
+        use_scatter=False,
 ):
 
     x_data = np.arange(len(data)) + 1
@@ -21,7 +22,10 @@ def plot(
     #           f"(min: {np.min(y_data):.2f}, max: {np.max(y_data):.2f})"
     #     warnings.warn(msg)
 
-    ax.scatter(x_data, y_data, color=color, alpha=0.5, s=point_size)
+    if use_scatter:
+        ax.scatter(x_data, y_data, color=color, alpha=0.5, s=point_size)
+    else:
+        ax.plot(x_data, y_data, color=color, alpha=0.5)
 
     if mid_line is not None:
         ax.axhline(mid_line, alpha=0.5, linewidth=1, color='black',
