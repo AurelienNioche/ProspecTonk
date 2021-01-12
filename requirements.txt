@@ -3,3 +3,7 @@ scipy
 django
 xlrd
 statsmodels
+pystan
+import_ipynb
+pandas
+tqdm
