@@ -2,6 +2,7 @@ numpy
 scipy
 django
 xlrd
+openpyxl
 statsmodels
 pystan
 import_ipynb
